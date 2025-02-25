@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Citation Optimization System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Google Maps - Map Citation Optimization System</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form action="/analyze" method="POST">
+                    <!-- Business URL Input -->
+                    <div class="form-group">
+                        <label for="business_url" class="form-label">Business URL:</label>
+                        <input 
+                            type="text" 
+                            id="business_url" 
+                            name="business_url" 
+                            class="form-control" 
+                            placeholder="Enter your business URL" 
+                            required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-block">Analyze</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
