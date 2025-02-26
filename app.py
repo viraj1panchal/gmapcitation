@@ -319,13 +319,27 @@ def group_competitor_data(filename):
 
 ### Generate related Keywords
 
+def filter_best_keywords(keywords):
+    # Remove generic or low-impact keywords
+    ignore_list = {"marketing", "SEO", "digital", "services"}  # Customize as needed
+    return [kw for kw in keywords if kw.lower() not in ignore_list]
+
 def generate_related_keywords(business_keywords, new_keywords, business_name, business_address):
     # Join business_keywords and new_keywords into a single string to provide context for OpenAI
     #input_keywords = ', '.join(business_keywords) + '. New keywords based on these terms: ' + ', '.join(new_keywords)
     bus_keywords = ', '.join(business_keywords)
     new_kywrds = ', '.join(new_keywords)
 
-    prompt = f"{business_name} located on {business_address} has top SEO keywords are {bus_keywords}. Our competitor's top SEO keywords are {new_kywrds}. Provide a list of relevant and effective SEO keywords."
+    #prompt = f"{business_name} located on {business_address} has top SEO keywords are {bus_keywords}. Our competitor's top SEO keywords are {new_kywrds}. Provide a list of relevant and effective SEO keywords."
+
+    prompt = f"""
+    {business_name} located at {business_address} specializes in SEO. 
+    Our top keywords: {bus_keywords}. 
+    Our competitor's top keywords: {new_kywrds}. 
+    Generate a list of the **most effective, high-volume, and conversion-optimized** SEO keywords. 
+    Ensure they are **relevant, competitive, and localized** where possible.
+    Provide the keywords **without numbering or extra text**—just the keywords separated by commas.
+    """
 
     # Request to OpenAI to generate related keywords
     #response = openai.Completion.create(
@@ -340,16 +354,17 @@ def generate_related_keywords(business_keywords, new_keywords, business_name, bu
     openai_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant specialized in SEO."},
+            {"role": "system", "content": "You are a keyword research assistant focused on SEO optimization."},
             {"role": "user", "content": prompt}
         ]
     )
 
     # Extract suggested keywords
     related_keywords = openai_response['choices'][0]['message']['content'].strip().split(',')
+    best_keywords = filter_best_keywords([kw.strip() for kw in related_keywords])
 
     # Clean and return the keywords as a list
-    return [keyword.strip() for keyword in related_keywords]
+    return best_keywords
 
 ######## DISPLAY MAP #############
 # Create and Display Map

@@ -196,12 +196,12 @@
         <!-- Suggested Keywords -->
         <div class="card shadow-sm" id="suggested-keywords-section">
             <div class="card-header bg-warning text-white">
-                <h2 class="h5 mb-0">Suggested Keywords</h2>
+                <h2 class="h5 mb-0">Best SEO Keywords</h2>
             </div>
             <div class="card-body">
-                <ul>
+                <ul class="list-unstyled">
                     {% for keyword in related_keywords %}
-                        {{ keyword }}
+                        <li class="badge bg-primary text-white p-2 m-1">{{ keyword }}</li>
                     {% endfor %}
                 </ul>
             </div>
