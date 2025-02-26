@@ -35,10 +35,14 @@ openai.api_key = 'sk-proj-zlDOV4obL-0oTWjCJI4rPtlShxx4njdpFLzpGgMSGyBQnbuG1HX5iV
 
 # Load Google Maps data (Assuming CSV has columns: 'latitude', 'longitude')
 #df = pd.read_csv("c:\\LearnGit\\gmapsdemo\\comp_list_gmaps.csv")
-csv_path = os.path.join(os.path.dirname(__file__), "data", "comp_list_gmaps.csv")
+csv_path = "/opt/render/project/src/data/comp_list_gmaps.csv"
 
 # Read the CSV file
-df = pd.read_csv(csv_path)
+if os.path.exists(csv_path):
+    df = pd.read_csv(csv_path)
+else:
+    print("CSV file not found. Skipping file processing.")
+    df = None  # or create an empty DataFrame
 
 # Extract domain
 def extract_domain(url):
