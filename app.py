@@ -34,7 +34,11 @@ SEMRUSH_API_KEY = "c08252868c1bd7ca6360254895cdecee"
 openai.api_key = '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'
 
 # Load Google Maps data (Assuming CSV has columns: 'latitude', 'longitude')
-df = pd.read_csv("c:\\LearnGit\\gmapsdemo\\comp_list_gmaps.csv")
+#df = pd.read_csv("c:\\LearnGit\\gmapsdemo\\comp_list_gmaps.csv")
+csv_path = os.path.join(os.path.dirname(__file__), "data", "comp_list_gmaps.csv")
+
+# Read the CSV file
+df = pd.read_csv(csv_path)
 
 # Extract domain
 def extract_domain(url):
