@@ -509,7 +509,8 @@ def analyze():
         competitors = []
 
         # Read the CSV file
-        with open('c:\\LearnGit\\gmapsdemo\\comp_list_gmaps.csv', mode='r', encoding='utf-8-sig') as file:
+        #with open('c:\\LearnGit\\gmapsdemo\\comp_list_gmaps.csv', mode='r', encoding='utf-8-sig') as file:
+        with open(csv_path, mode='r', encoding='utf-8-sig') as file:
             csv_reader = csv.DictReader(file)
             for row in csv_reader:
                 competitors.append(row)
