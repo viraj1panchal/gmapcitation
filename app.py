@@ -20,8 +20,8 @@ import math
 from collections import defaultdict
 import openai
 import schedule
-import time
-import threading
+#import time
+#import threading
 import os
 
 # Initialize Flask app
@@ -644,20 +644,20 @@ def analyze():
         return jsonify({"error": "An error occurred during analysis."})
     
 # 3️⃣ Schedule the job to run every day at midnight
-schedule.every().day.at("01:05").do(analyze)
+#schedule.every().day.at("01:05").do(analyze)
 
 # 4️⃣ Function to continuously check & run scheduled tasks
-def run_scheduler():
-    print("🟢 Scheduler Started... Checking for tasks every 60 seconds.")
-    while True:
-        schedule.run_pending()
-        time.sleep(60)  # Wait 1 minute before checking again
+#def run_scheduler():
+#    print("🟢 Scheduler Started... Checking for tasks every 60 seconds.")
+#    while True:
+#        schedule.run_pending()
+#        time.sleep(60)  # Wait 1 minute before checking again
 
 # 5️⃣ Start the scheduler in a background thread when the app starts
-scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
-scheduler_thread.start()
+#scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
+#scheduler_thread.start()
 
 # Run the Flask app
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Default to 5000 if PORT is not set
-    app.run(host='0.0.0.0', port=port)
+    #port = int(os.environ.get('PORT', 5000))  # Default to 5000 if PORT is not set
+    app.run()
