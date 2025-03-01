@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+import secrets
 from flask_sqlalchemy import SQLAlchemy
 import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -27,6 +28,11 @@ import os
 
 # Initialize Flask app
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(16)  # Generate a secure key
+
+# Dummy admin credentials
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD = 'password'
 
 # Configure SQLite Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///businesses.db'
@@ -467,8 +473,28 @@ def create_map(lat, lng, competitors, business_name, business_address, o_lat, o_
 
 # Routes
 @app.route('/')
-def index():
-    return render_template('index.html')
+def home():
+    if 'username' in session:
+        return render_template('index.html')
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session['username'] = username
+            return redirect(url_for('home'))
+        else:
+            return 'Invalid credentials, please try again!'
+    
+    return render_template('login.html')
+
+#@app.route('/')
+#def index():
+#    return render_template('index.html')
 
 @app.route('/view-records', methods=['GET'])
 def view_records():
@@ -671,6 +697,12 @@ def analyze():
         print(f"Error from Main: {e.with_traceback()}")
         traceback.print_exc()
         return jsonify({"error": "An error occurred during analysis."})
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
+
     
 # 3️⃣ Schedule the job to run every day at midnight
 #schedule.every().day.at("01:05").do(analyze)
