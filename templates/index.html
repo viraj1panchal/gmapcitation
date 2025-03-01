@@ -38,18 +38,31 @@
     </div>
 
     <script>
-        // Voice Input Functionality
-        document.getElementById("voiceInput").addEventListener("click", function() {
+        document.getElementById("voiceSearch").addEventListener("click", function() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert("Voice recognition is not supported in your browser.");
+                return;
+            }
+    
             let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = "en-US";
+            recognition.interimResults = false;
+            recognition.continuous = false;
+    
             recognition.start();
-
+    
             recognition.onresult = function(event) {
-                document.getElementById("business_url").value = event.results[0][0].transcript;
+                let transcript = event.results[0][0].transcript;
+                document.getElementById("business_url").value = transcript;
             };
-
+    
             recognition.onerror = function(event) {
                 console.error("Speech recognition error:", event.error);
+                alert("Error: " + event.error);
+            };
+    
+            recognition.onspeechend = function() {
+                recognition.stop();
             };
         });
     </script>
