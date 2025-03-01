@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -26,6 +27,22 @@ import os
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Configure SQLite Database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///businesses.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+# Define Database Model
+class Business(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    business_url = db.Column(db.String(500), nullable=False)
+
+
+# Create Database Tables
+with app.app_context():
+    db.create_all()
 
 # SEMrush API Key
 SEMRUSH_API_KEY = "c08252868c1bd7ca6360254895cdecee"
@@ -453,9 +470,21 @@ def create_map(lat, lng, competitors, business_name, business_address, o_lat, o_
 def index():
     return render_template('index.html')
 
+@app.route('/view-records', methods=['GET'])
+def view_records():
+    records = Business.query.all()
+    return {"data": [{"id": r.id, "business_url": r.business_url} for r in records]}
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
     try:
+
+        business_url = request.form['business_url']  # Get input from form
+        new_entry = Business(business_url=business_url)
+
+        db.session.add(new_entry)
+        db.session.commit()
+        #return "Business URL saved successfully!"
 
         ######## OWN BUSINESS DETAILS ######################
         #business_url = request.form.get('business_url')
