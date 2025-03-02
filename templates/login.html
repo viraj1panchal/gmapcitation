@@ -23,12 +23,13 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.querySelector("form").onsubmit = function(event) {
             var errorMessage = "{{ error }}";  // Get error message from Flask
             if (errorMessage) {
-                alert(errorMessage);  // Show alert if error exists
+                alert(errorMessage);  // Show alert only when the button is clicked
+                event.preventDefault();  // Stop form submission on error
             }
-        });
+        };
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
