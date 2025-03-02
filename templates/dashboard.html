@@ -106,14 +106,14 @@
                     }
                 });
             });
-
+    
             // Handle form submission from domain_search.html
             $(document).on("submit", "#domainSearchForm", function(e) {
                 e.preventDefault(); // Prevent default form submission
-
+    
                 // Show loading state
                 $("#content").html("<p class='loading'>Analyzing...</p>");
-
+    
                 // Submit form data via AJAX
                 $.ajax({
                     url: "/analyze",
@@ -122,23 +122,43 @@
                     success: function(response) {
                         // Load the results.html content into the #content div
                         $("#content").html(response);
+                        // Re-initialize scripts after loading results.html
+                        initializeScripts();
                     },
                     error: function(xhr, status, error) {
                         $("#content").html("<p class='text-danger'>Error analyzing the URL. Please try again.</p>");
                     }
                 });
             });
-
+    
             // Logout confirmation with Bootstrap modal
             $("#logoutLink").click(function(e) {
                 e.preventDefault(); // Prevent default link behavior
                 $("#logoutModal").modal("show"); // Show the modal
             });
-
+    
             // Confirm logout action
             $("#confirmLogout").click(function() {
                 window.location.href = "/logout"; // Redirect to logout
             });
+
+            // Function to re-initialize scripts after loading results.html
+            function initializeScripts() {
+                // Initialize DataTables
+                $('#competitor-keywords-table').DataTable({
+                    "paging": true,
+                    "searching": true,
+                    "info": true,
+                    "lengthChange": false,
+                    "pageLength": 5,
+                    "order": [[2, "desc"]] // Sort by Rating column by default
+                });
+
+                // Re-enable Bootstrap tooltips, popovers, and modals
+                $('[data-bs-toggle="tooltip"]').tooltip();
+                $('[data-bs-toggle="popover"]').popover();
+                $('.modal').modal({ show: false }); // Ensure modals are initialized
+            }
         });
     </script>
 </body>

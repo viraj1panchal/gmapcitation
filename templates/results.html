@@ -1,3 +1,10 @@
+<!-- Back Button -->
+<div class="text-center mb-4">
+    <button id="backButton" class="btn btn-secondary">
+        ← Back to Domain Search
+    </button>
+</div>
+
 <!-- Business Details Card -->
 <div class="card shadow-sm" id="business-details">
     <div class="card-header bg-primary text-white">
@@ -121,6 +128,16 @@
             "lengthChange": false,
             "pageLength": 5,
             "order": [[2, "desc"]] // Sort by Rating column by default
+        });
+
+        // Back Button: Load domain_search.html into #content
+        $("#backButton").click(function() {
+            $("#content").html("<p class='loading'>Loading...</p>");
+            $("#content").load("/domain_search", function(response, status, xhr) {
+                if (status == "error") {
+                    $("#content").html("<p>Error loading content. Please try again.</p>");
+                }
+            });
         });
     });
 </script>
