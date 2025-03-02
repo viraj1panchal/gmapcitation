@@ -488,17 +488,17 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
-            session['username'] = username
-            return redirect(url_for('home'))
-        else:
-            return render_template('login.html', error="Invalid credentials, please try again!")
+    #if request.method == 'POST':
+    username = request.form['username']
+    password = request.form['password']
     
-    return render_template('login.html', error=None)
+    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        session['username'] = username
+        return redirect(url_for('home'))
+    else:
+        return render_template('login.html', error="Invalid credentials, please try again!")
+    
+    #return render_template('login.html', error=None)
 
 
 #@app.route('/')
