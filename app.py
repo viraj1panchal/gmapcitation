@@ -500,6 +500,13 @@ def login():
     
     return render_template('login.html')
 
+# New route to serve only the Domain Search content
+@app.route('/domain_search')
+def domain_search():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('domain_search.html')
+
 #@app.route('/')
 #def index():
 #    return render_template('index.html')
