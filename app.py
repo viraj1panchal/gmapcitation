@@ -482,9 +482,9 @@ def create_map(lat, lng, competitors, business_name, business_address, o_lat, o_
 # Routes
 @app.route('/')
 def home():
-    if 'username' in session:
-        return render_template('dashboard.html')
-    return redirect(url_for('login'))
+    if 'username' not in session:
+        return redirect(url_for('login'))  # Redirect if session does not exist
+    return render_template('dashboard.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -708,7 +708,8 @@ def analyze():
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
+    session.clear()  # Clear session completely
+    #session.pop('username', None)
     return redirect(url_for('login'))
 
     
