@@ -120,6 +120,11 @@
 
 <script>
     $(document).ready(function() {
+        // Destroy existing DataTable instance (if any) before reinitializing
+        if ($.fn.DataTable.isDataTable('#competitor-keywords-table')) {
+            $('#competitor-keywords-table').DataTable().destroy();
+        }
+
         // Initialize Competitor Keywords Table
         $('#competitor-keywords-table').DataTable({
             "paging": true,

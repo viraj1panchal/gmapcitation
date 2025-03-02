@@ -122,6 +122,7 @@
                     success: function(response) {
                         // Load the results.html content into the #content div
                         $("#content").html(response);
+    
                         // Re-initialize scripts after loading results.html
                         initializeScripts();
                     },
@@ -141,9 +142,14 @@
             $("#confirmLogout").click(function() {
                 window.location.href = "/logout"; // Redirect to logout
             });
-
+    
             // Function to re-initialize scripts after loading results.html
             function initializeScripts() {
+                // Destroy existing DataTable instance (if any) before reinitializing
+                if ($.fn.DataTable.isDataTable('#competitor-keywords-table')) {
+                    $('#competitor-keywords-table').DataTable().destroy();
+                }
+    
                 // Initialize DataTables
                 $('#competitor-keywords-table').DataTable({
                     "paging": true,
@@ -153,7 +159,7 @@
                     "pageLength": 5,
                     "order": [[2, "desc"]] // Sort by Rating column by default
                 });
-
+    
                 // Re-enable Bootstrap tooltips, popovers, and modals
                 $('[data-bs-toggle="tooltip"]').tooltip();
                 $('[data-bs-toggle="popover"]').popover();
