@@ -18,20 +18,47 @@
         {% endif %}
 
         <form action="/login" method="POST" class="card p-4 shadow">
+            <!-- CSRF Token (if applicable) -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" id="remember_me" name="remember_me" class="form-check-input">
+                <label for="remember_me" class="form-check-label">Remember Me</label>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <div class="text-center mt-3">
+                <a href="/forgot-password">Forgot Password?</a>
+            </div>
         </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+    </script>
 </body>
 </html>
