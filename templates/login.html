@@ -8,7 +8,15 @@
 </head>
 <body>
     <div class="container my-5">
-        <h2 class="text-center">Map Citation Optimization System - Admin Login</h2>
+        <h2 class="text-center">Admin Login</h2>
+
+        <!-- Display error message if exists -->
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
         <form action="/login" method="POST" class="card p-4 shadow">
             <div class="form-group">
                 <label for="username">Username:</label>
@@ -21,16 +29,6 @@
             <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
     </div>
-
-    <!-- <script>
-        document.querySelector("form").onsubmit = function(event) {
-            var errorMessage = "{{ error }}";  // Get error message from Flask
-            if (errorMessage) {
-                alert(errorMessage);  // Show alert only when the button is clicked
-                event.preventDefault();  // Stop form submission on error
-            }
-        };
-    </script> -->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>

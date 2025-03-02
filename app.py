@@ -496,7 +496,8 @@ def login():
             session['username'] = username
             return redirect(url_for('home'))
         else:
-            return 'Invalid credentials, please try again!'
+            # Pass the error message to the template
+            return render_template('login.html', error_message="Invalid credentials, please try again!")
     
     return render_template('login.html')
 
