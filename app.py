@@ -475,7 +475,7 @@ def create_map(lat, lng, competitors, business_name, business_address, o_lat, o_
 @app.route('/')
 def home():
     if 'username' in session:
-        return render_template('index.html')
+        return render_template('dashboard.html')
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
