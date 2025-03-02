@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, make_response
 import secrets
 from flask_sqlalchemy import SQLAlchemy
 import requests
@@ -29,6 +29,14 @@ import os
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)  # Generate a secure key
+
+# Prevent caching after logout
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 # Dummy admin credentials
 ADMIN_USERNAME = 'admin'
