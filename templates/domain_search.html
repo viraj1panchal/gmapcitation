@@ -2,7 +2,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <h1 class="text-center mb-4">Domain Search</h1>
-            <form action="/analyze" method="POST">
+            <form action="/analyze" method="POST" id="domainSearchForm">
                 <div class="form-group d-flex align-items-center">
                     <label for="business_url" class="form-label mr-2">URL:</label>
                     <input 
@@ -11,14 +11,22 @@
                         name="business_url" 
                         class="form-control" 
                         placeholder="Enter your business URL" 
-                        required>
-                    <button type="button" id="voiceInput" class="btn btn-secondary ml-2">
+                        required
+                        pattern="https?://.+" 
+                        title="Please enter a valid URL (e.g., http://example.com)">
+                    <button 
+                        type="button" 
+                        id="voiceInput" 
+                        class="btn btn-secondary ml-2" 
+                        aria-label="Voice Input">
                         🎙️
                     </button>
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block">Analyze</button>
+                    <button type="submit" class="btn btn-primary btn-block" id="analyzeButton">
+                        Analyze
+                    </button>
                 </div>
             </form>
         </div>
@@ -37,20 +45,38 @@
         recognition.interimResults = false;
         recognition.continuous = false;
 
+        // Visual feedback for active voice input
+        document.getElementById("voiceInput").textContent = "🎙️ Listening...";
         recognition.start();
 
         recognition.onresult = function(event) {
             let transcript = event.results[0][0].transcript;
             document.getElementById("business_url").value = transcript;
+            document.getElementById("voiceInput").textContent = "🎙️";
         };
 
         recognition.onerror = function(event) {
             console.error("Speech recognition error:", event.error);
             alert("Error: " + event.error);
+            document.getElementById("voiceInput").textContent = "🎙️";
         };
 
         recognition.onspeechend = function() {
             recognition.stop();
+            document.getElementById("voiceInput").textContent = "🎙️";
         };
+    });
+
+    // Disable form submission if URL is invalid
+    document.getElementById("domainSearchForm").addEventListener("submit", function(event) {
+        let urlInput = document.getElementById("business_url");
+        if (!urlInput.checkValidity()) {
+            event.preventDefault();
+            alert("Please enter a valid URL (e.g., http://example.com)");
+        } else {
+            // Disable button and show loading state
+            document.getElementById("analyzeButton").disabled = true;
+            document.getElementById("analyzeButton").textContent = "Analyzing...";
+        }
     });
 </script>
