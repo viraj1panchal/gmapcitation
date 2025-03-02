@@ -1,0 +1,59 @@
+<div class="container my-5">
+    <h1 class="text-center mb-4">Google Maps - Map Citation Optimization System</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="/analyze" method="POST">
+                <!-- Business URL Input with Voice -->
+                <div class="form-group d-flex align-items-center">
+                    <label for="business_url" class="form-label mr-2">Business URL:</label>
+                    <input 
+                        type="text" 
+                        id="business_url" 
+                        name="business_url" 
+                        class="form-control" 
+                        placeholder="Enter your business URL" 
+                        required>
+                    <button type="button" id="voiceInput" class="btn btn-secondary ml-2">
+                        🎤
+                    </button>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-block">Analyze</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("voiceInput").addEventListener("click", function() {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            alert("Voice recognition is not supported in your browser.");
+            return;
+        }
+
+        let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "en-US";
+        recognition.interimResults = false;
+        recognition.continuous = false;
+
+        recognition.start();
+
+        recognition.onresult = function(event) {
+            let transcript = event.results[0][0].transcript;
+            document.getElementById("business_url").value = transcript;
+        };
+
+        recognition.onerror = function(event) {
+            console.error("Speech recognition error:", event.error);
+            alert("Error: " + event.error);
+        };
+
+        recognition.onspeechend = function() {
+            recognition.stop();
+        };
+    });
+</script>
