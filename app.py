@@ -30,6 +30,10 @@ import os
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)  # Generate a secure key
 
+# Dummy admin credentials
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD = 'admin'
+
 # Prevent caching after logout
 @app.after_request
 def add_header(response):
@@ -37,10 +41,6 @@ def add_header(response):
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
-
-# Dummy admin credentials
-ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = 'password'
 
 # Configure SQLite Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///businesses.db'
@@ -496,9 +496,10 @@ def login():
             session['username'] = username
             return redirect(url_for('home'))
         else:
-            return 'Invalid credentials, please try again!'
+            return render_template('login.html', error="Invalid credentials, please try again!")
     
-    return render_template('login.html')
+    return render_template('login.html', error=None)
+
 
 #@app.route('/')
 #def index():
@@ -709,8 +710,9 @@ def analyze():
 @app.route('/logout')
 def logout():
     session.clear()  # Clear session completely
-    #session.pop('username', None)
     return redirect(url_for('login'))
+    #session.pop('username', None)
+    
 
     
 # 3️⃣ Schedule the job to run every day at midnight

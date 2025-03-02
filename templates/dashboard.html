@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Citation Optimization System - Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -21,6 +21,7 @@
             text-decoration: none;
             display: block;
             padding: 10px 0;
+            cursor: pointer;
         }
         #sidebar a:hover {
             background: #495057;
@@ -36,29 +37,26 @@
 
     <div id="sidebar">
         <h3>Admin Panel</h3>
-        <a href="/">Domain Search</a>
+        <a id="domainSearch">Domain Search</a> <!-- Modified to use AJAX -->
         <a href="/logout">Logout</a>
     </div>
 
     <div id="content">
-        {% include 'index_content.html' %}
+        <h3>Welcome to the Admin Dashboard</h3>
+        <p>Click "Domain Search" to start analyzing business URLs.</p>
     </div>
 
+    <!-- jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <script>
-        window.onload = function() {
-            if (!sessionStorage.getItem("loggedIn")) {
-                window.location.href = "/login";  // Redirect to login if session is missing
-            }
-        };
-    
-        window.onbeforeunload = function() {
-            sessionStorage.removeItem("loggedIn");  // Clear session storage on page close
-        };
+        $(document).ready(function() {
+            // Load domain search content when clicking "Domain Search"
+            $("#domainSearch").click(function() {
+                $("#content").load("/domain_search");
+            });
+        });
     </script>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>    
 
 </body>
 </html>
