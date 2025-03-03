@@ -1,120 +1,144 @@
-<!-- Back Button -->
-<div class="text-center mb-4">
-    <button id="backButton" class="btn btn-secondary">
-        ← Back to Domain Search
-    </button>
-</div>
+<head>
+    <style>
+        #content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        #map-section iframe {
+            border: 0;
+        }
+        .full-width-map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
 
-<!-- Business Details Card -->
-<div class="card shadow-sm" id="business-details">
-    <div class="card-header bg-primary text-white">
-        <h2 class="h4 mb-0" id="business-name">{{ business_name }}'s Keywords:</h2>
-    </div>
-    <div class="card-body">
-        <ul>
-            {% for keyword_data in keywords_business %}
-                <li>
-                    <strong>{{ keyword_data.keyword }}</strong> (Position: {{ keyword_data.current_position }})
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
 
-<!-- Map Section -->
-<div class="card shadow-sm" id="map-section">
-    <div class="card-header bg-info text-white">
-        <h3 class="h5 mb-0">Competitor Map | Target a {{ suggested_radius }}-mile radius for optimal results.</h3>
+<div id="content">
+    <!-- Back Button -->
+    <div class="text-left mb-4">
+        <button id="backButton" class="btn btn-secondary">
+            ← Back to Domain Search
+        </button>
     </div>
-    <div class="card-body p-0">
-        <iframe src="{{ url_for('static', filename='files/map.html') }}" class="full-width-map"></iframe>
-    </div>
-</div>
 
-<!-- Competitor Scraping Data Report -->
-<div class="card shadow-sm" id="competitor-scraping-table-section">
-    <div class="card-header bg-secondary text-white">
-        <h3 class="h5 mb-0">Competitor Website Scraping</h3>
+    <!-- Business Details Card -->
+    <div class="card shadow-sm" id="business-details">
+        <div class="card-header bg-primary text-white">
+            <h2 class="h4 mb-0" id="business-name">{{ business_name }}'s Keywords:</h2>
+        </div>
+        <div class="card-body">
+            <ul>
+                {% for keyword_data in keywords_business %}
+                    <li>
+                        <strong>{{ keyword_data.keyword }}</strong> (Position: {{ keyword_data.current_position }})
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="competitor-keywords-table" class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Competitor Name</th>
-                        <th>Website</th>
-                        <th>Average Rating</th>
-                        <th>Extracted Keywords & Positions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for name, data in grouped_data.items() %}
-                    <tr>
-                        <td>{{ name }}</td>
-                        <td>
-                            <a href="{{ data.website }}" target="_blank">
-                                {{ data.website.split('/')[2] }}
-                            </a>
-                        </td>
-                        <td>{{ data.avg_rating }}</td>
-                        <td>
-                            <!-- Button to trigger the modal -->
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#keywordsModal{{ loop.index }}">
-                                View Details
-                            </button>
-                        </td>
-                    </tr>
 
-                    <!-- Modal for each competitor -->
-                    <div class="modal fade" id="keywordsModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ loop.index }}" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel{{ loop.index }}">Keywords & Positions - {{ name }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <ul>
-                                        {% for keyword, position in data.keywords_positions %}
-                                            <li><strong>{{ keyword }}</strong> (Position: {{ position }})</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <!-- Map Section -->
+    <div class="card shadow-sm" id="map-section">
+        <div class="card-header bg-info text-white">
+            <h3 class="h5 mb-0">Competitor Map | Target a {{ suggested_radius }}-mile radius for optimal results.</h3>
+        </div>
+        <div class="card-body p-0">
+            <iframe src="{{ url_for('static', filename='files/map.html') }}" class="full-width-map"></iframe>
+        </div>
+    </div>
+
+    <!-- Competitor Scraping Data Report -->
+    <div class="card shadow-sm" id="competitor-scraping-table-section">
+        <div class="card-header bg-secondary text-white">
+            <h3 class="h5 mb-0">Competitor Website Scraping</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="competitor-keywords-table" class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Competitor Name</th>
+                            <th>Website</th>
+                            <th>Average Rating</th>
+                            <th>Extracted Keywords & Positions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name, data in grouped_data.items() %}
+                        <tr>
+                            <td>{{ name }}</td>
+                            <td>
+                                <a href="{{ data.website }}" target="_blank">
+                                    {{ data.website.split('/')[2] }}
+                                </a>
+                            </td>
+                            <td>{{ data.avg_rating }}</td>
+                            <td>
+                                <!-- Button to trigger the modal -->
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#keywordsModal{{ loop.index }}">
+                                    View Details
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal for each competitor -->
+                        <div class="modal fade" id="keywordsModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ loop.index }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel{{ loop.index }}">Keywords & Positions - {{ name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul>
+                                            {% for keyword, position in data.keywords_positions %}
+                                                <li><strong>{{ keyword }}</strong> (Position: {{ position }})</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Structured Data Section -->
-<div class="card shadow-sm" id="structured-data-section">
-    <div class="card-header bg-success text-white">
-        <h3 class="h5 mb-0">Business Structured Data (JSON-LD)</h3>
+    <!-- Structured Data Section -->
+    <div class="card shadow-sm" id="structured-data-section">
+        <div class="card-header bg-success text-white">
+            <h3 class="h5 mb-0">Business Structured Data (JSON-LD)</h3>
+        </div>
+        <div class="card-body">
+            <h5>JSON-LD Structured Data:</h5>
+            <pre>{{ structured_data | tojson | safe }}</pre>
+        </div>
     </div>
-    <div class="card-body">
-        <h5>JSON-LD Structured Data:</h5>
-        <pre>{{ structured_data | tojson | safe }}</pre>
-    </div>
-</div>
 
-<!-- Suggested Keywords -->
-<div class="card shadow-sm" id="suggested-keywords-section">
-    <div class="card-header bg-warning text-white">
-        <h2 class="h5 mb-0">Best SEO Keywords</h2>
-    </div>
-    <div class="card-body">
-        <ul class="list-unstyled">
-            {% for keyword in related_keywords %}
-                <li class="badge bg-primary text-white p-2 m-1">{{ keyword }}</li>
-            {% endfor %}
-        </ul>
+    <!-- Suggested Keywords -->
+    <div class="card shadow-sm" id="suggested-keywords-section">
+        <div class="card-header bg-warning text-white">
+            <h2 class="h5 mb-0">Best SEO Keywords</h2>
+        </div>
+        <div class="card-body">
+            <ul class="list-unstyled">
+                {% for keyword in related_keywords %}
+                    <li class="badge bg-primary text-white p-2 m-1">{{ keyword }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
 <!-- Bootstrap JS -->
